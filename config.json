@@ -3,5 +3,6 @@
  "dbport":"3306",
  "dbuser":"root",
  "dbpass":"",
- "dbname":"crh-mysql"
+ "dbname":"crh-mysql",
+    "dbname":"crh-mysql"
 }
