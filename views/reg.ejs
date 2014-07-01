@@ -1,0 +1,24 @@
+<% include inc-head.ejs %>
+
+<script>
+    $(function(){
+        $("#btn-reg").click(function(){
+
+        });
+    });
+</script>
+
+<form role="form" id="reg-form" method="post" action="/reg-save">
+    <div class="form-group">
+        <label for="exampleInputEmail1">用户名</label>
+        <input type="text" class="form-control" name="user[uname]" id="exampleInputEmail1" placeholder="用户名">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">密码</label>
+        <input type="password" class="form-control" name="user[upass]" id="exampleInputPassword1" placeholder="密码">
+    </div>
+
+    <button type="submit" id="btn-reg" class="btn btn-default">注册</button>
+</form>
+
+<% include inc-foot.ejs %>
