@@ -1,61 +1,21 @@
-var mysql = require('mysql');
-var fs = require('fs');
+var mysqlClient = require('./mysql-client').init();
 
-var connectionPool = null;
+var orgdao = module.exports;
 
-function getCon(callback) {
-    connectionPool.getConnection(function (err, connection) {
-        if (err) throw err;
-        callback(connection);
-    });
-};
-
-exports.createDatabase = function (config, callback) {
-    var connection = mysql.createConnection({
-        host: config.MySqlHost,
-        port: config.MySqlPort,
-        user: config.MySqlUser,
-        password: config.MySqlPass,
-        multipleStatements: true,
-        debug: false
-    });
-    connection.query("CREATE DATABASE IF NOT EXISTS " + config.dbname, null, function (err) {
-        connection.query("USE " + config.MySqlDatabase, null, function (err) {
-            var schemas = fs.readFileSync('PowerTeam.database.schemas.sql').toString();
-            connection.query(schemas, null, function (err) {
-                connection.end();
-                callback();
-            });
-        });
-    });
-};
-
-exports.testConnection = function (config, callback) {
-    var connection = mysql.createConnection({
-        host: config.MySqlHost,
-        port: config.MySqlPort,
-        user: config.MySqlUser,
-        password: config.MySqlPass,
-        debug: false
-    });
-    connection.connect(callback);
-}
-
-exports.createConnectionPool = function (config) {
-    connectionPool = mysql.createPool({
-        host: config.MySqlHost,
-        port: config.MySqlPort,
-        user: config.MySqlUser,
-        password: config.MySqlPass,
-        database: config.MySqlDatabase,
-        multipleStatements: true,
-        debug: false
-    });
-};
-
-exports.execSql = function (sql, params, callback) {
-    getCon(function (con) {
-        con.query(sql, params, callback);
-        con.release();
+orgdao.queryOrgByPId = function (pid, cb){
+    var sql = 'YOUR SQL';
+    var args = [pid];
+    mysqlClient.query(sql,args,function(err, res){
+        if(err !== null){
+            utils.invokeCallback(cb, err.message, null);
+        }
+        else {
+            if (!!res) {
+                utils.invokeCallback(cb, null, res);
+            }
+            else{
+                utils.invokeCallback(cb, null, null);
+            }
+        }
     });
 };
