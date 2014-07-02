@@ -3,16 +3,27 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: '笑话集市' });
+  require('../bll/first-page').queryContribute(function(data){
+      res.render('index', { title: '笑话集市',jokes:data });
+  });
 });
 router.get('/month_ranking', function(req, res) {
     res.render('month_ranking', { title: '月排行' });
 });
-router.get('/cold_joke', function(req, res) {
-    res.render('cold_joke', { title: '冷笑话' });
+router.get('/joke_gif', function(req, res) {
+    res.render('joke_gif', { title: '搞笑动画' });
 });
 router.get('/contribute', function(req, res) {
     res.render('contribute', { title: '我要投稿' });
+});
+
+router.post('/index/savegoodbad',function(req,res){
+    var contribute = require('../bll/contribute');
+    var obj = req.body;//{ id: '6a39393e-a6e3-7999-e1c1-c098b892e1d2', what: 'good' }
+    contribute.saveGoodBad(obj,function(isok){
+        res.send({flag:isok});
+    });
+
 });
 
 router.post('/contribute/save', function(req, res) {
