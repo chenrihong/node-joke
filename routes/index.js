@@ -8,7 +8,10 @@ router.get('/', function(req, res) {
   });
 });
 router.get('/month_ranking', function(req, res) {
-    res.render('month_ranking', { title: '月排行' });
+    require('../bll/first-page').queryContributeMonthRanking(function(data){
+        res.render('month_ranking', { title: '月排行',jokes:data });
+    });
+
 });
 router.get('/joke_gif', function(req, res) {
     res.render('joke_gif', { title: '搞笑动画' });
