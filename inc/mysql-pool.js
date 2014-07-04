@@ -3,10 +3,10 @@
  */
 var mysql        =  require('mysql');
 var mysqlConfig = {
-    "host":"localhost",
+    "host":"115.28.50.138",
     "user":"root",
-    "password":"",
-    "database":"crh-mysql"
+    "password":"root",
+    "database":"node-joke-db"
 };
 
 var env = process.env.NODE_ENV || 'development';
