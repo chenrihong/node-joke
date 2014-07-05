@@ -7,7 +7,7 @@ exports.saveContribute = function(strText){
     var sql = "insert into joke_contribute (id,contribute_text,contribute_datetime,contribute_user_id,contribute_good,contribute_bad)";
     sql += " values('"+ guid +"','"+ strText+"',now(),'1234',0,0)";
   dbc.insert(sql,null,function(err, res){
-      console.log(err);
+      err && console.log(err);
   });
 
 };
