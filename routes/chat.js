@@ -8,7 +8,7 @@ var router = express.Router();
 
 router.get('/', function(req, res) {
 
-    res.render("chat\\index",{title:"即时聊天"});
+    res.render("chat/index",{title:"即时聊天"});
 });
 
 module.exports = router;
