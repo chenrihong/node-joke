@@ -16,7 +16,7 @@ exports.initChatServer = function(io){
     //WebSocket连接监听
     io.on('connection', function (socket) {
         socket.emit('open');//通知客户端已连接
-       console.log(socket);
+
         // 打印握手信息
         //console.log(socket.handshake);
 
