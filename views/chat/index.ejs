@@ -2,83 +2,134 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <style>
-    * {padding:0px; margin:0px;}
-    body{font-family:tahoma; font-size:12px;margin:10px;}
-    p {line-height:18px;padding:2px;}
-    div {width:500px;}
-    #content {
-        padding:5px;
-        background:#ddd;
-        border-radius:5px;
-        border:1px solid #CCC;
-        margin-top:10px;
-    }
-    #input {
-        border-radius:2px;
-        border:1px solid #ccc;
-        margin-top:10px;
-        padding:5px;
-        width:380px;
-    }
-    #status {
-        width:100px;
-        display:block;
-        float:left;
-        margin-top:15px;
-    }
+
 </style>
 
 <script>
     $(function () {
-        var content = $('#content');
-        var status = $('#status');
-        var input = $('#input');
-        var myName = false;
+        initPage();
 
-        socket = io.connect();
-
-        socket.on('open',function(){
-            status.text('您的昵称:');
-        });
-
-        socket.on('system',function(json){
-            var p = '';
-            if (json.type === 'welcome'){
-                if(myName==json.text) status.text(myName + ': ').css('color', json.color);
-                p = '<p style="background:'+json.color+'">system @ '+ json.time+ ' : 欢迎 ' + json.text +'</p>';
-            }else if(json.type == 'disconnect'){
-                p = '<p style="background:'+json.color+'">system @ '+ json.time+ ' : 再见 ' + json.text +'</p>';
+        function checkNickName(){
+            var nickName = $("#nickname").val();
+            if($.trim(nickName).length == 0 ){
+                mainfn.msg("昵称必须填写");
+                $("#nickname").focus();
+                return false;
             }
-            content.prepend(p);
-        });
 
-//监听message事件，打印消息信息
-        socket.on('message',function(json){
-            var p = '<p><span style="color:'+json.color+';">' + json.author+'</span> @ '+ json.time+ ' : '+json.text+'</p>';
-            content.prepend(p);
-        });
+            sendNickName(nickName);
+            return true;
+        }
 
-//通过“回车”提交聊天信息
-        input.keydown(function(e) {
-            if (e.keyCode === 13) {
-                var msg = $(this).val();
+        $('#crh-modal').on('hidden.bs.modal', function (e) {
+            if(!checkNickName()){
+                $('#crh-modal').modal("show");
+                $("#nickname").focus();
+            }
+        })
+
+        function sendNickName(nickName){
+            socket.send(nickName);
+            $("#chatNickName").text(nickName+"：");
+        }
+
+        function startChat(){
+            var content = $("#chatContent");
+            var input = $("#chatInput");
+            var member = $("#chatMember");
+            var myNickName = $("#chatNickName").text();
+            input.keydown(function(e){
+                if (e.keyCode === 13) {
+                    var msg = this.value;
+                    if (!msg) return;
+                    socket.send(msg);
+                    this.value = '';
+                }
+            });
+
+            $("#btnSendMessage").click(function(){
+                var msg = input.get(0).value;
                 if (!msg) return;
                 socket.send(msg);
-                $(this).val('');
-                if (myName === false) {
-                    myName = msg;
+                input.get(0).value = '';
+            });
+
+            socket.on('system',function(json){
+                var p = '';
+                switch (json.type){
+                    case 'welcome':
+                        p='<div class="alert alert-info" role="alert">系统消息：'+json.text+'（'+ json.time+ '）进入聊天室</div>';
+                        member.find(":not(:first)").remove();
+                        for(var i in json.member){
+                            member.append('<li class="list-group-item">'+ json.member[i] +'</li>');
+                        }
+                        break;
+                    case 'disconnect':
+                        p='<div class="alert alert-info" role="alert">系统消息：'+json.text+'（'+ json.time+ '）离开聊天室</div>';
+                        member.find("li").each(function(idx,obj){
+                           if($.trim(obj.innerText) == json.text){
+                               $(obj).remove();
+                               return false;
+                           }
+                        });
+                        break;
                 }
-            }
-        });
+                content.append(p);
+            });
+
+            socket.on('message',function(json){
+                if(json.author == json.text){
+                    return;
+                }
+                var p = '<p><span style="color:'+json.color+';">' + json.author+'@ '+ json.time+ ' :</span>  '+json.text+'</p>';
+                content.append(p);
+                input.get(0).scrollIntoView(true);
+            });
+        }
+
+
+        function initPage(){
+            socket = io.connect();
+
+            mainfn.dialog("简单的Socket.IO应用-聊天室","连接服务器中，请稍候。。。。",checkNickName,"开始聊天");
+
+            socket.on('open',function(){
+                $("#crh-modal-body").html("<label for='nickname'>您的昵称：</label><input type='text' id='nickname'>");
+            });
+
+            startChat();
+        }
     });
+
+    function clearScreen(){
+        var div = document.getElementById("chatContent");
+        div.innerText = "";
+    }
 </script>
 
-<h1>Socket.io - Simple chat room</h1>
+<h1>Socket.IO Chat Room</h1>
+<div style="width: 100%">
+    <div style="width: 70%;float: left">
+        <div class="panel panel-default">
+            <div class="panel-body"  id="chatContent">
 
-<div>
-    <span id="status">连接服务器中，请稍候。。.</span>
-    <input type="text" id="input"/>
+            </div>
+            <div class="panel-footer">
+                <label for="chatInput" id="chatNickName">[未登录]
+                </label>
+                <input type="text" id="chatInput" style="width;200px;">
+                <button class="btn btn-primary btn-sm" id="btnSendMessage">发送（Enter）</button>
+                <button class="btn btn-default btn-sm" onclick="clearScreen()">清屏</button>
+            </div>
+        </div>
+    </div>
+    <div style="float: left;margin-left: 10px;">
+        <ul class="list-group" id="chatMember">
+            <li class="list-group-item">聊天室成员列表</li>
+        </ul>
+    </div>
 </div>
-<div id="content"></div>
+
+
 
 <% include ../inc-foot.ejs %>
