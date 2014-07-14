@@ -10,8 +10,8 @@ exports.initChatServer = function(io){
 
     console.log("socket.io servicing....")
 
+    var xss = require('xss');
     var arrMember = [];
-
 
     //WebSocket连接监听
     io.on('connection', function (socket) {
@@ -31,6 +31,7 @@ exports.initChatServer = function(io){
         // 对message事件的监听
         socket.on('message', function(msg){
             var obj = {time:new Date(),color:client.color};
+            var msg = xss(msg);
 
             // 判断是不是第一次连接，以第一条消息作为用户名
             if(!client.name){
