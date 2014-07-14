@@ -65,7 +65,10 @@
                         }
                         break;
                     case 'disconnect':
-                        p='<div class="alert alert-info" role="alert">系统消息：'+json.text+'（'+ json.time+ '）离开聊天室</div>';
+                        if(!json.text){
+                            break;
+                        }
+                        p='<div class="alert alert-info" role="alert">系统消息：'+json.text +'（'+ json.time+ '）离开聊天室</div>';
                         member.find("li").each(function(idx,obj){
                            if($.trim(obj.innerText) == json.text){
                                $(obj).remove();
