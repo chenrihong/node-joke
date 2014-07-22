@@ -1,0 +1,79 @@
+<% include ../inc-head.ejs %>
+
+<script>
+    $(function(){
+        $("#btnCatchWebJoke").click(function(){
+            var formdata = $("#form-catch").serialize();
+            $.post("/admin/catchjokes",formdata,function(data){
+                alert(data.msg);
+            });
+        });
+    });
+</script>
+
+
+<div>
+<h4 class="container">
+    <small><a href="/admin" id="top">管理首页</a>&nbsp;&nbsp;&nbsp;<a href="/">网站首页</a></small>
+</h4>
+<div class="container">
+    <div style="float: left; width: 30%;">
+        <div class="list-group">
+            <a href="#" class="list-group-item">
+                笑话管理
+            </a>
+            <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+            <a href="#" class="list-group-item">Morbi leo risus</a>
+            <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+            <a href="#" class="list-group-item">Vestibulum at eros</a>
+        </div>
+    </div>
+    <div style="float: left; margin-left: 2%;width: 68%;">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form id="form-catch">
+                <p class="lead">
+                    在线抓取
+                </p>
+                <p>
+                    <label>
+                        笑话网址<span class="text text-danger">(以“/”结尾，不含页面文件名)</span> </label>：
+                    <input type="text" name="catch[url]" style="width: 300px;" value="http://www.liaima.com/html/2012/youmoxiaohua_0113/">
+
+                </p>
+                <p>
+                    <label for="catch_ipt">
+                        页码范围：
+                    </label>
+                    <input type="text"  name="catch[begin]" value="3425" style="width:80px;">
+                    -
+                    <input type="text" name="catch[end]" value="3430" style="width:80px;">
+                </p>
+                <p>
+                    <label>
+                        笑话页面类型（如“.html”，如果没有则不填）：</label>
+                        <input type="text" name="catch[url]" value=".html">
+                </p>
+                <p class="text text-info">
+                    以上三个参数组成一个完整的页面
+                </p>
+               <p>
+                <label for="catch_ipt">
+                    所需内容 jQuery 选择器
+                </label>
+                <input type="text" name="catch[selector]" value="#Article .content">
+               </p>
+                </form>
+                <p>
+                    <button id="btnCatchWebJoke" class="btn btn-default btn-sm">
+                        抓取
+                    </button>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+<% include ../inc-foot.ejs %>
