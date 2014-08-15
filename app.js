@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var chat = require("./routes/chat");
 var admin = require("./routes/admin")
-
+var map = require("./routes/map")
 var app = express();
 
 // view engine setup
@@ -28,6 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/chat', chat);
 app.use("/admin",admin);
+app.use("/map",map);
+
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
