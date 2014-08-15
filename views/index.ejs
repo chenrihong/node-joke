@@ -1,57 +1,117 @@
 <% include inc-head.ejs %>
 
-<script>
-    function clickGood(id){
-        saveClickGoodBad(id,'good');
-    }
-    function clickBad(id){
-        saveClickGoodBad(id,'bad');
-    }
-
-    function saveClickGoodBad(id,what){
-        $.post("/index/savegoodbad",{id:id,what:what},function(data){
-            data.flag && updateGoodBadNum(id,what);
-        });
-    }
-
-    function updateGoodBadNum(id,what){
-        var idx = 0 ;
-        if(what == 'bad'){idx += 1;}
-        var $lbl = $("#"+id).find("label").eq(idx);
-        $lbl.text(parseInt($lbl.text(),10) + 1);
-    }
-</script>
-
-<div style="width: 100%; height: 58px; background-color: #2d2d2d; color: grey">
-    <div class="logo" style="float: left; width: 200px; text-align: center;">
-        <a href="/" title="本站内容如有侵仅请联系管理员，我们会在第一时间删除">笑话集市</a>
-    </div>
-    <ul class="index_nav">
-        <li class="active"><a href="/">每天更新</a></li>
-        <li><a href="/month_ranking">月排行</a></li>
-        <li><a href="/joke_gif">搞笑动画</a></li>
-        <li><a href="/contribute">我要投稿</a></li>
-        <li><a href="/chat">在线聊天</a></li>
-        <li><a href="/map">地图</a></li>
-    </ul>
-</div>
-
-<div style="width: 500px;margin-left: 200px; margin-top: 20px;">
-    <% for(var i=0; i<jokes.length; i++) {%>
-
-    <div class="well well-lg">
-        <p><%= jokes[i].contribute_text %></p>
-        <div style="float: right" id="<%=jokes[i].id%>">
-            <a href="#" onclick="clickGood('<%=jokes[i].id%>')">好</a>(<label><%=jokes[i].contribute_good%></label>)
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" onclick="clickBad('<%=jokes[i].id%>')">差</a>(<label><%=jokes[i].contribute_bad%></label>)
+<div>
+    <h4 class="container text-right">
+        简惠开发手册v.0.0.1
+    </h4>
+    <div class="container">
+        <div style="float: left; width: 30%;">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-success">护理管理</li>
+                <a href="#WEBSITE" class="list-group-item">常用网址</a></a>
+                <a href="#PUBLIC.CLASS" class="list-group-item">公共方法介绍</a></a>
+                <a href="#DBO.CONFIG" class="list-group-item">DAO.CONFIG</a></a>
+            </ul>
         </div>
 
+        <div style="float: left; margin-left: 2%;width: 68%;">
+
+            <div id="WEBSITE" class="panel panel-default">
+                <div class="panel-body">
+                    <p>
+                        <a target="_blank" href="http://iwellinfo.eicp.net/URTracker/home.aspx">事务跟踪系统</a>
+                    </p>
+                    <p>
+                        <a target="_blank" href="http://iwellinfo.eicp.net/pzgl/sys/login/">配置管理系统</a>
+                    </p>
+                    <p>
+                        <a target="_blank" href="http://192。168.0.5/pzgl/sys/login/">配置管理系统（内网）</a>
+                    </p>
+                </div>
+            </div>
+
+            <div id="PUBLIC.CLASS" class="panel panel-default">
+                <div class="panel-body">
+                    <h6>取得系统参数表参数方法<code>SELECT * FROM XT_XTCS WHERE CSID = 'HR_PB_CELL_W_H'</code></h6>
+                    <code>
+                        IWell.Manager.ParmManager.Instance.getCsz("HR_PB_CELL_W_H");
+                    </code>
+                </div>
+            </div>
+
+            <div id="DBO.CONFIG" class="panel panel-default">
+             <div class="panel-heading">MS SQL 版本</div>
+                <div class="panel-body">
+                    <xmp>
+<?xml version="1.0" encoding="utf-8"?>
+<daoConfig xmlns="http://ibatis.apache.org/dataAccess" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <providers resource="providers.config"/>
+    <context id="iwell" default="true">
+        <database>
+            <provider name="sqlServer2005" />
+            <dataSource name="iwell" default="true" connectionString="data source=.;database=xxx;user id=sa;password=sa;"/>
+        </database>
+        <daoSessionHandler id="SqlMap">
+            <property name="resource" value="SqlMap.config" />
+        </daoSessionHandler>
+        <properties>
+            <property key="ibatis_key_clob" value=""/>
+
+            <property key="ibatis_key_plus" value="+"/>
+
+            <property key="ibatis_key_todate" value=""/>
+
+            <property key="ibatis_key_todate_end" value=""/>
+
+            <property key="ibatis_key_dual" value=""/>
+
+            <property key="ibatis_key_plus_begin" value=""/>
+
+            <property key="ibatis_key_plus_end" value=""/>
+        </properties>
+    </context>
+</daoConfig>
+                   </xmp>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">ORACLE 版本</div>
+                <div class="panel-body">
+                    <xmp>
+<?xml version="1.0" encoding="utf-8"?>
+<daoConfig xmlns="http://ibatis.apache.org/dataAccess" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <providers resource="providers.config"/>
+    <context id="iwell" default="true">
+        <database>
+            <provider  name="oracleClient1.0" />
+            <dataSource name="iwell" connectionString="Data Source=orcl;user=xxx;password=xxx"/>
+        </database>
+        <daoSessionHandler id="SqlMap">
+            <property name="resource" value="SqlMap.config" />
+        </daoSessionHandler>
+        <properties>
+            <property key="ibatis_key_clob" value=":clob"/>
+
+            <property key="ibatis_key_plus" value="||"/>
+
+            <property key="ibatis_key_todate" value="to_date("/>
+
+            <property key="ibatis_key_todate_end" value=",'yyyy-mm-dd HH24:mi:ss')"/>
+
+            <property key="ibatis_key_dual" value=" from dual"/>
+
+            <property key="ibatis_key_plus_begin" value=""/>
+
+            <property key="ibatis_key_plus_end" value=""/>
+
+        </properties>
+    </context>
+</daoConfig>
+                    </xmp>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <% if(i > 30){break;}%>
-
-    <% } %>
 
 </div>
 
