@@ -1,17 +1,10 @@
-/**
- * Created by Administrator on 2014/7/22.
- */
-
-
-
-var express = require('express');
-var router = express.Router();
+var router = require('express').Router();
 
 router.get('/', function(req, res) {
     res.render("admin/index",{title:"管理首页"});
 });
 router.get('/iwell', function(req, res) {
-    res.render("admin/iwell",{title:"管理首页"});
+    res.render("admin/iwell",{title:"AAA"});
 });
 
 router.post('/catchjokes', function(req, res) {
@@ -38,9 +31,6 @@ router.post('/catchjokes', function(req, res) {
     else{
         res.send({flag:false,msg:"非预期的表单"});
     }
-
-
-
 });
 
 module.exports = router;

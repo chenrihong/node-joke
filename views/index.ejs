@@ -7,15 +7,17 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/bootstrap-3.2.0-dist/css/bootstrap.min.css' />
     <link rel='stylesheet' href='/bootstrap-3.2.0-dist/css/bootstrap-theme.min.css' />
-    <script>
-        var browser=navigator.appName;
-        var version=navigator.appVersion.split(";")[1].replace(/[ ]/g,"");
-        if(navigator.appName == "Microsoft Internet Explorer"){
-            if(version == "MSIE6.0" || version == "MSIE7.0" || version =="MSIE8.0" ){
-                document.location.replace("/browser_version_is_too_low");
-            }
+    <!--[if lt IE 9]>
+    <script type="text/javascript">
+        var unsupport = true;
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if("unsupport" in window){
+            document.location.replace("/browser_version_is_too_low");
         }
     </script>
+    <script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.8/angular.min.js"></script>
 </head>
 <body class="inner">
 <section>
@@ -31,24 +33,23 @@
             <a href="/game/cleanmine" target="_self">扫雷</a>
         </nav>
     </header>
-    <div>
-        <ul>
-            <li ng-repeat="x in data">{{x.title}}</li>
-        </ul>
+    <div id="maincontent">
+      <ul>
+          <li ng-repeat="x in names">{{x.x}}</li>
+      </ul>
     </div>
 </section>
 
-<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.8/angular.min.js"></script>
+
 <!--<script type="text/javascript" src="/javascripts/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>-->
 <script>
-    var x = "aaaaaaa";
-    function testContorller($scope){
-        $scope.data = [];
-        for(var i=0;i<1000;i++){
-            $scope.data.push({title:"ABCDEFGHIJKLMN"+i});
+    function testContorller($scope,$http){
+        $scope.maincontent = "";
+        $scope.names = [];
+        for(var i =0;i<300;i++){
+            $scope.names.push({x:"AAAAAAAAAAAAA"+i});
         }
-        $scope.x = x;
     }
     window.onscroll = function(){
        var top = document.body.scrollTop;
