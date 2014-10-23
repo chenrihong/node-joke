@@ -5,10 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var chat = require("./routes/chat");
-var admin = require("./routes/admin")
-var map = require("./routes/map")
 var app = express();
 
 // view engine setup
@@ -25,10 +21,24 @@ app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/chat', chat);
-app.use("/admin",admin);
-app.use("/map",map);
+// 注册路由
+var websitemap = require('./config.json').map || {};
+for(var route in websitemap){
+    var maproute = require('./routes/'+route);
+    var maps = websitemap[route] || [];
+    for(var i in maps){
+        var map = maps[i];
+        app.use(map.url,maproute);
+    }
+}
+/*var routes = require('./routes/index');
+ var chat = require("./routes/chat");
+ var admin = require("./routes/admin")
+ var map = require("./routes/map")
+ app.use('/', routes);
+ app.use('/chat', chat);
+ app.use("/admin",admin);
+ app.use("/map",map);*/
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

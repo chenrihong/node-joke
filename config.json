@@ -1,7 +1,19 @@
 {
- "dbhost":"127.0.0.1",
- "dbport":"3306",
- "dbuser":"root",
- "dbpass":"",
- "dbname":"crh-mysql"
+   "map" :{
+       "index":[{
+           "title":"首页",
+           "url":"/",
+           "desc":"xxx"
+       }],
+       "chat":[{
+           "title":"聊天室",
+           "url":"/chat",
+           "desc":"xxx"
+       }],
+       "admin":[{
+           "title":"开发文档",
+           "url":"/admin/iwell",
+           "desc":"xxx"
+       }]
+   }
 }

@@ -1,88 +1,63 @@
-<% include inc-head.ejs %>
-
-<div>
-    <h4 class="container text-right">
-        简惠开发手册v.0.0.1
-    </h4>
-    <div class="container">
-        <div style="float: left; width: 30%;">
-            <ul class="list-group">
-                <li class="list-group-item list-group-item-success">护理管理</li>
-                <a href="#WEBSITE" class="list-group-item">常用网址</a></a>
-                <a href="#PUBLIC.CLASS" class="list-group-item">公共方法介绍</a>
-                <a href="#PUBLIC.DB" class="list-group-item">数据库操作</a></a>
-                <a href="#PUBLIC.FLOW" class="list-group-item">需求处理的流程</a></a>
-            </ul>
-        </div>
-
-        <div style="float: left; margin-left: 2%;width: 68%;">
-
-            <div id="WEBSITE" class="panel panel-default">
-                <div class="panel-body">
-                    <p>
-                        <a target="_blank" href="http://iwellinfo.eicp.net/URTracker/home.aspx">事务跟踪系统</a>
-                    </p>
-                    <p>
-                        <a target="_blank" href="http://iwellinfo.eicp.net/pzgl/sys/login/">配置管理系统</a>
-                    </p>
-                    <p>
-                        <a target="_blank" href="http://192。168.0.5/pzgl/sys/login/">配置管理系统（内网）</a>
-                    </p>
-                </div>
-            </div>
-
-            <div id="PUBLIC.CLASS" class="panel panel-default">
-                <div class="panel-body">
-                    <h6>取得系统参数表参数方法</h6>
-                    <code>IWell.Manager.ParmManager.Instance.getCsz</code>
-                    <h6>自增序号</h6>
-                    <code>IWell.Manager.XhbManager.Instance.getXhb</code>
-                </div>
-            </div>
-
-            <div id="PUBLIC.DB" class="panel panel-default">
-                <div class="panel-heading">数据库操作(引用命名空间 IWell.Pub)</div>
-                <div class="panel-body">
-                    <strong>查询</strong>
-                    <hr>
-                    <code>DB.SelectFirst</code>
-                    <code>DB.Select</code>
-                    <code>DB.Load</code>
-                    <code>DB.List</code>
-                    <code>DB.ListSod</code>
-
-                    <p>&nbsp;</p>
-                    <p style="color: grey;">使用方法请在项目中搜索关键字</p>
-                    <p>&nbsp;</p>
-                    <strong>执行</strong>
-                    <hr>
-                    <code>DB.Execute</code>
-                    <p>&nbsp;</p>
-                    <p style="color: grey;">使用方法请在项目中搜索关键字</p>
-                    <p>&nbsp;</p>
-                </div>
-            </div>
-
-            <div id="PUBLIC.FLOW" class="panel panel-default">
-                <div class="panel-heading">需求处理的流程</div>
-                <div class="panel-body">
-                    <strong>涉及表，字段，功能，参数等数据库改动和系统配置的操作的处理流程：</strong>
-                    <p>&nbsp;</p>
-                    <ol class="list-group">
-                        <li class="list-group-item">1、在表结构.xls（系统功能.xls）文件中，增加或删减后生成sql</li>
-                        <li class="list-group-item">2、将处理得到的sql保存到<a target="_blank" href="http://iwellinfo.eicp.net/pzgl/sys/login/">配置管理系统</a></li>
-                        <li class="list-group-item">3、如果有表结构的修改，用代码生成器生成Map,Model文件，更新（创建）对应文件</li>
-                        <li class="list-group-item">4、如果有新增表结构，在 SqlMapper.config中增加一条记录</li>
-                        <li class="list-group-item">5、测试成功后连同代码和文件一块签入</li>
-                    </ol>
-
-                </div>
-            </div>
-
-
-        </div>
+<!DOCTYPE html>
+<html id="ng-app" ng-app ng-controller="testContorller">
+<head>
+    <title><%=title%></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="keywords" content="笑话, 笑话集市, 好笑的笑话, joke, 哈哈">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/bootstrap-3.2.0-dist/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='/bootstrap-3.2.0-dist/css/bootstrap-theme.min.css' />
+    <script>
+        var browser=navigator.appName;
+        var version=navigator.appVersion.split(";")[1].replace(/[ ]/g,"");
+        if(navigator.appName == "Microsoft Internet Explorer"){
+            if(version == "MSIE6.0" || version == "MSIE7.0" || version =="MSIE8.0" ){
+                document.location.replace("/browser_version_is_too_low");
+            }
+        }
+    </script>
+</head>
+<body class="inner">
+<section>
+    <header>
+        <section id="logo">
+            <span class="express"></span>
+        </section>
+        <nav class="clearfix">
+            <a href="/" target="_self" class="active"> 首页</a>
+            <a href="/chat" target="_self"> 聊天室</a>
+            <a href="/admin/iwell" target="_self">开发文档</a>
+            <a href="/admin" target="_self">管理中心</a>
+            <a href="/game/cleanmine" target="_self">扫雷</a>
+        </nav>
+    </header>
+    <div>
+        <ul>
+            <li ng-repeat="x in data">{{x.title}}</li>
+        </ul>
     </div>
+</section>
 
-</div>
-
-<% include inc-foot.ejs %>
+<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.8/angular.min.js"></script>
+<!--<script type="text/javascript" src="/javascripts/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>-->
+<script>
+    var x = "aaaaaaa";
+    function testContorller($scope){
+        $scope.data = [];
+        for(var i=0;i<1000;i++){
+            $scope.data.push({title:"ABCDEFGHIJKLMN"+i});
+        }
+        $scope.x = x;
+    }
+    window.onscroll = function(){
+       var top = document.body.scrollTop;
+       if(top!=0){
+           document.body.className = "inner scroll" ;
+       }else{
+           document.body.className = "inner";
+       }
+   };
+</script>
+</body>
+</html>
