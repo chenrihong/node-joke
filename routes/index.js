@@ -1,6 +1,11 @@
 var router =  require('express').Router();
 
 router.get('/', function(req, res) {
+
+    /*require("../bll/first-page").first(function(html){
+        res.send(html);
+    });*/
+
     res.render("index",{title:"笑话集市"});
 });
 
