@@ -2,43 +2,35 @@ var jsdom = require("jsdom");
 var http = require("http");
 var fs   = require("fs");
 
-function catch2(cb){
-    var html = "";
-
-    http.get('http://www.qiushibaike.com',function(res){
-        res.setEncoding("utf8");
-        res.on('data',function(data){//图片加载到内存变量
-            html += data;
-        }).on('end',function(){//加载完毕保存图片
-            console.log(html);
-            cb && cb(html);
-        });
-    });
-}
-
-function catchCore(){
+function downloadText(doc){
     jsdom.env(
-        "http://www.qiushibaike.com/hot/",
+        doc,
         ["http://code.jquery.com/jquery.js"],
         function (errors, window) {
             if(errors){
                 console.log(errors);
+                return;
             }
             var $ = window.$;
-            console.log($("body").html());
-            console.log($("img").length);
-            return;
-            $("img").each(function(idx,obj){
+            $(".content").each(function(idx,obj){
+                fs.writeFile('public/qiushibaike.txt','',function(err){
+                    if (err) throw err;
+                    fs.appendFile('public/qiushibaike.txt',$(obj).text());
+                    fs.appendFile('public/qiushibaike.txt',"\r\n\r\n");
+                });
+            });
+
+            $(".thumb img").each(function(idx,obj){
                 var src = obj.src;
                 if(/pic.qiushibaike.com/.test(src)){
 
-                   http.get(src, function(res) {
+                    http.get(src, function(res) {
                         res.setEncoding('binary');//二进制（binary）
                         var imageData ='';
                         res.on('data',function(data){//图片加载到内存变量
                             imageData += data;
                         }).on('end',function(){//加载完毕保存图片
-                            var imageName = src.substr(src.length-8,8);
+                            var imageName = src.substr(src.length-11,11);
                             fs.writeFile('public/images/'+imageName, imageData, 'binary', function (err) {//以二进制格式保存
                                 if (err) throw err;
                                 console.log('file saved');
@@ -55,30 +47,16 @@ function catchCore(){
     );
 }
 
+function catchCore(){
+
+    http.get({hostname:'www.qiushibaike.com', port:80, path:'/', headers:{"User-Agent":"Mozilla\/5.0 (Windows NT 6.1; WOW64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/38.0.2125.104 Safari\/537.36"}}, function (res) {
+        var html = "";
+        res.on('data',function(data){
+            html += data;
+        }).on('end',function(){
+            downloadText(html);
+        });
+    })
+}
+
 exports.first = catchCore;
-/*
-var dbc = require('../inc/mysql-client').init();
-
-exports.queryContribute = function(callback){
-    var sql = "SELECT * FROM joke_contribute WHERE 1 = 1 ORDER BY contribute_datetime DESC LIMIT 0 , 30"
-
-    dbc.query(sql,null,function(err, res){
-        if(err){
-            console.log(err);
-        }else{
-            callback && callback(res);
-        }
-    });
-};
-
-exports.queryContributeMonthRanking = function(callback){
-    var sql = "SELECT *  FROM joke_contribute where date_sub(now(), INTERVAL 30 DAY) <= contribute_datetime ORDER BY contribute_good DESC LIMIT 0,30"
-
-    dbc.query(sql,null,function(err, res){
-        if(err){
-            console.log(err);
-        }else{
-            callback && callback(res);
-        }
-    });
-};*/

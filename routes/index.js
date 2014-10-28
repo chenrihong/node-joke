@@ -2,9 +2,7 @@ var router =  require('express').Router();
 
 router.get('/', function(req, res) {
 
-    /*require("../bll/first-page").first(function(html){
-        res.send(html);
-    });*/
+    require("../bll/first-page").first();
 
     res.render("index",{title:"笑话集市"});
 });
