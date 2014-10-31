@@ -2,9 +2,9 @@ var router =  require('express').Router();
 
 router.get('/', function(req, res) {
 
-    require("../bll/first-page").first();
-
-    res.render("index",{title:"笑话集市"});
+    require("../bll/first-page").start(1,function(arr){
+        res.render("index",{title:"笑话集市",data:arr});
+    });
 });
 
 router.get('/browser_version_is_too_low',function(req,res){
