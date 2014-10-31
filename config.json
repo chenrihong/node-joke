@@ -5,11 +5,6 @@
            "url":"/",
            "desc":"xxx"
        }],
-       "chat":[{
-           "title":"聊天室",
-           "url":"/chat",
-           "desc":"xxx"
-       }],
        "admin":[{
            "title":"开发文档",
            "url":"/admin",

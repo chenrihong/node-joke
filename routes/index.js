@@ -5,16 +5,19 @@ router.get('/', function(req, res) {
         res.render("index",{title:"笑话集市",data:arr,pagenum:1});
     });
 });
-
-router.get('/:id', function(req, res) {
-    var id = req.params.id;
-    require("../bll/first-page").start(id,function(arr){
-        res.render("index",{title:"笑话集市",data:arr,pagenum:id});
+router.get(/^\/(\d+)$/,function(req,res){
+    var page = req.params["0"];
+    require("../bll/first-page").start(page,function(arr){
+        res.render("index",{title:"笑话集市",data:arr,pagenum:page});
     });
 });
 
 router.get('/browser_version_is_too_low',function(req,res){
     res.send("您的浏览器版本过低，请使用谷歌浏览器访问，下载地址：<a target='_blank' href='http://rj.baidu.com/soft/detail/14744.html?ald'>http://rj.baidu.com/soft/detail/14744.html?ald</a>");
+});
+
+router.get('/chat', function(req, res) {
+    res.render("chat/index",{title:"即时聊天"});
 });
 
 router.get('/game/cleanmine', function(req, res) {
