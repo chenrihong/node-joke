@@ -23,8 +23,7 @@ function pickHtml(doc,callback){
 }
 
 function start(pagenum,callback){
-
-    http.get({hostname:'www.qiushibaike.com', port:80, path:'/', headers:{"User-Agent":"Mozilla\/5.0 (Windows NT 6.1; WOW64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/38.0.2125.104 Safari\/537.36"}}, function (res) {
+    http.get({hostname:'www.qiushibaike.com', port:80, path:'/8hr/page/'+pagenum, headers:{"User-Agent":"Mozilla\/5.0 (Windows NT 6.1; WOW64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/38.0.2125.104 Safari\/537.36"}}, function (res) {
         var html = "";
         res.on('data',function(data){
             html += data;

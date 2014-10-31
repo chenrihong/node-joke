@@ -1,9 +1,15 @@
 var router =  require('express').Router();
 
 router.get('/', function(req, res) {
-
     require("../bll/first-page").start(1,function(arr){
-        res.render("index",{title:"笑话集市",data:arr});
+        res.render("index",{title:"笑话集市",data:arr,pagenum:1});
+    });
+});
+
+router.get('/:id', function(req, res) {
+    var id = req.params.id;
+    require("../bll/first-page").start(id,function(arr){
+        res.render("index",{title:"笑话集市",data:arr,pagenum:id});
     });
 });
 
