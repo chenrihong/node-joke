@@ -1,5 +1,4 @@
 var http = require("http");
-var fs   = require("fs");
 var cheerio = require("cheerio");
 
 function pickHtml(doc,callback){
