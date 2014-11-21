@@ -6,7 +6,7 @@ var mysqlConfig = {
     "host":"115.28.50.138",
     "user":"root",
     "password":"root",
-    "database":"node-joke-db"
+    "database":"moviedb"
 };
 
 var env = process.env.NODE_ENV || 'development';

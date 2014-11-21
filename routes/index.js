@@ -28,4 +28,10 @@ router.get('/game/cleanmine', function(req, res) {
     res.send(html);
 });
 
+router.get('/sk',function(req,res){
+    require("../bll/sk").start();
+
+    res.send('aa');
+});
+
 module.exports = router;
