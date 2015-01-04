@@ -1,9 +1,9 @@
 {
    "map" :{
        "index":[{
-           "title":"首页",
-           "url":"/",
-           "desc":"xxx"
+               "title":"首页",
+               "url":"/",
+               "desc":"xxx"
        }],
        "admin":[{
            "title":"开发文档",
