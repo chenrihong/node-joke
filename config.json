@@ -5,6 +5,11 @@
                "url":"/",
                "desc":"xxx"
        }],
+       "signin":[{
+           "title":"登录",
+           "url":"/signin",
+           "desc":"xxx"
+       }],
        "admin":[{
            "title":"开发文档",
            "url":"/admin",

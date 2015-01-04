@@ -142,8 +142,8 @@ $(function () {
         return "".format(label, text);
     };
 
-    main.prototype.checkForm = function ($form) {
-        var nm = 0;
+    main.prototype.checkForm = function ($form,callback) {
+
         $form.find(".notnull").each(function (idx, obj) {
             if (obj.tagName.toLowerCase() == "input" || obj.tagName.toLowerCase() == "select") {
                 if (obj.value === "") {
@@ -158,14 +158,15 @@ $(function () {
                         $(obj).tooltip('destroy');
                         obj.style.borderColor = "";
                     }, 4000);
-
-                    nm++;
+                    callback && callback(0);
                     return false;
+                }
+
+                if(idx ==  $form.find(".notnull").length - 1){
+                    callback && callback(1);
                 }
             }
         });
-
-        return nm > 0;
     };
     main.prototype.loadForm = function ($form, data) {
 
