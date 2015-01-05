@@ -1,19 +1,25 @@
 var router =  require('express').Router();
 
+function getTitle(req){
+    return req.session.current_user_account = req.session.current_user_account || "游客" + " 欢迎您 | 笑话集市";
+}
+
+
+
 router.get('/', function(req, res) {
-
-    console.log(req.session.current_user_account);
-
     require("../bll/first-page").start(1,function(arr){
-        res.render("index",{title:  req.session.current_user_account + " 欢迎您 | 笑话集市",data:arr,pagenum:1});
+        res.render("index",{title: getTitle(req),data:arr,pagenum:1});
     });
 });
+
+
 router.get(/^\/(\d+)$/,function(req,res){
     var page = req.params["0"];
     require("../bll/first-page").start(page,function(arr){
-        res.render("index",{title:"笑话集市",data:arr,pagenum:page});
+        res.render("index",{title:__title,data:arr,pagenum:page});
     });
 });
+
 
 router.get('/browser_version_is_too_low',function(req,res){
     res.send("您的浏览器版本过低，请使用谷歌浏览器访问，下载地址：<a target='_blank' href='http://rj.baidu.com/soft/detail/14744.html?ald'>http://rj.baidu.com/soft/detail/14744.html?ald</a>");
