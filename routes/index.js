@@ -1,14 +1,19 @@
 var router =  require('express').Router();
 
 function getTitle(req){
-    return req.session.current_user_account = req.session.current_user_account || "游客" + " 欢迎您 | 笑话集市";
+    var ac = req.session.current_user_account || "游客"
+    return  ac + " 欢迎您 | 笑话集市";
 }
 
 
 
 router.get('/', function(req, res) {
     require("../bll/first-page").start(1,function(arr){
-        res.render("index",{title: getTitle(req),data:arr,pagenum:1});
+        res.render("index",{
+            title: getTitle(req),
+            data:arr,pagenum:1,
+            username: req.session.current_user_account
+        });
     });
 });
 
@@ -16,7 +21,11 @@ router.get('/', function(req, res) {
 router.get(/^\/(\d+)$/,function(req,res){
     var page = req.params["0"];
     require("../bll/first-page").start(page,function(arr){
-        res.render("index",{title:__title,data:arr,pagenum:page});
+        res.render("index",{
+            title: getTitle(req),
+            data:arr,pagenum:page,
+            username: req.session.current_user_account
+        });
     });
 });
 

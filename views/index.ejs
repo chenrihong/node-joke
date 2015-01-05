@@ -29,6 +29,11 @@
             <a href="/" target="_self" class="active"> 首页</a>
             <a href="/chat" target="_self"> 聊天室</a>
             <a href="/game/cleanmine" target="_self">扫雷</a>
+            <% if(! username ){%>
+            <a href="/signin" target="_self">登录</a>
+            <%} else { %>
+            <a href="/" target="_self"><%=username%></a>
+            <%}%>
         </nav>
     </header>
     <div id="maincontent" style="margin: 0 auto;width: 90%">
