@@ -20,6 +20,7 @@
     "socket.io":"1.0.6",
     "xss":"0.1.9",
     "cheerio":"0.17.0",
-    "underscore":"1.7.0"
+    "underscore":"1.7.0",
+    "express-session":"1.9.3"
   }
 }

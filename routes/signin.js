@@ -5,7 +5,10 @@ router.get('/', function(req, res) {
 });
 
 router.post('/checklogin',function(req, res){
-    res.send({flag:1,msg:"登录成功"});
+
+    var resultJson = require('../bll/system/deal-login').doLogin(req);
+    res.send(resultJson);
+
 });
 
 module.exports = router;

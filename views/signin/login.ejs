@@ -24,8 +24,10 @@
          $("#btnSignIn").click(function(){
              mainfn.checkForm($("#form1"),function(success){
                  if(success){
-                     $.post("/signin/checklogin",{account:'xxx',password:'xsdf'},function(json){
-                         alert(json.msg);
+                     $.post("/signin/checklogin",{account:$("input[type='text']").val(),password:$("input[type='password']").val()},function(json){
+                         if(json.flag){
+                             document.location.replace('/');
+                         }
                      });
                  }
              });

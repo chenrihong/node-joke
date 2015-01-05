@@ -1,8 +1,11 @@
 var router =  require('express').Router();
 
 router.get('/', function(req, res) {
+
+    console.log(req.session.current_user_account);
+
     require("../bll/first-page").start(1,function(arr){
-        res.render("index",{title:"笑话集市",data:arr,pagenum:1});
+        res.render("index",{title:  req.session.current_user_account + " 欢迎您 | 笑话集市",data:arr,pagenum:1});
     });
 });
 router.get(/^\/(\d+)$/,function(req,res){

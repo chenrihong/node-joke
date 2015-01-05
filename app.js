@@ -1,4 +1,6 @@
 var express = require('express');
+var session = require('express-session');
+
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
@@ -21,24 +23,18 @@ app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 注册路由
-var websitemap = require('./config.json').map || {};
-for(var route in websitemap){
-    var maproute = require('./routes/'+route);
-    var maps = websitemap[route] || [];
-    for(var i in maps){
-        var map = maps[i];
-        app.use(map.url,maproute);
-    }
-}
-/*var routes = require('./routes/index');
- var chat = require("./routes/chat");
- var admin = require("./routes/admin")
- var map = require("./routes/map")
- app.use('/', routes);
- app.use('/chat', chat);
- app.use("/admin",admin);
- app.use("/map",map);*/
+app.use(session({
+    secret: 'CRH_NODE_JOKE',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { path: '/', httpOnly: true, secure: false, maxAge: 30 * 60 * 1000 }//30min
+}))
+
+require("./bll/system/deal-route").doRoute(app);
+
+
+
+
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
