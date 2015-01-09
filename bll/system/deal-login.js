@@ -15,7 +15,7 @@ exports.doLogin = function(req){
         return obj;
     }
     if(!password){
-        retobj.msg = "密码不允许为空！";
+        obj.msg = "密码不允许为空！";
         return obj;
     }
 
